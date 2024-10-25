@@ -1,36 +1,26 @@
-import { useState, useEffect } from 'react'
-import Login from './components/Auth/Login'
-import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
-import AdminDashboard from './components/Dashboard/AdminDashboard'
-
+import { useState , useContext} from "react";
+import Login from "./components/Auth/Login";
+import EmployeeDashboard from "./components/Dashboard/EmployeeDashboard";
+import AdminDashboard from "./components/Dashboard/AdminDashboard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthContext} from './context/AuthProvider'
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Define getLocalStorage inside the App component
-  const getLocalStorage = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setIsLoggedIn(true);
-      setIsAdmin(user.role === 'admin');
-    }
-  };
-
-  useEffect(() => {
-    getLocalStorage();
-  }, []);
+       const data = useContext(AuthContext)
 
   return (
-    <>
-      {!isLoggedIn ? (
-        <Login />
-      ) : isAdmin ? (
-        <AdminDashboard />
-      ) : (
-        <EmployeeDashboard />
-      )}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+      </Routes>
+
+    </BrowserRouter>
   );
 };
 
 export default App;
+
+
